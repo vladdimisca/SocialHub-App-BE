@@ -13,17 +13,17 @@ module.exports.listen = (server) => {
         socket.on('message', (message) => {
           messageService.sendMessage(message);
 
-          socket.to(message.chatId).emit('message-broadcast', message);
+          io.of('/chat').in(message.chatId).emit('message-broadcast', message);
         })
 
-        socket.on('type', async (chatId, email) => {
+        socket.on('type', async (chatId, email, receiverEmail) => {
           const user = await userService.getUserByEmail(email);
 
-          socket.to(chatId).emit('typing', user.firstName);
+          io.of('/chat').in(chatId).emit('typing', receiverEmail, user.firstName);
         })
 
         socket.on('noLongerTyping', (chatId) => {
-          socket.to(chatId).emit('stopTyping');
+          io.of('/chat').in(chatId).emit('stopTyping');
         })
     });
 }
