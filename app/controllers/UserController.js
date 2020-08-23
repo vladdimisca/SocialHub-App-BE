@@ -39,4 +39,14 @@ router.get('/api/userEmail', async (req, res) => {
     })
 })
 
+router.get('/api/userByEmail', async (req, res) => {
+    const user = await userService.getUserByEmail(req.query.email);
+
+    res.status(200).send({
+        uuid: user.uuid,
+        firstName: user.firstName,
+        lastName: user.lastName
+    })
+})
+
 module.exports = router;
