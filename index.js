@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require("body-parser");
 const cors = require('cors');
+const socketIO = require('socket.io');
 
 const PORT = 3000;
 const app = express();
@@ -18,5 +19,10 @@ server.listen(PORT, function () {
   console.log('Social Hub is listening on port ' + PORT + ' !');
 });
 
+const io = socketIO(server);
+
 const chatSocket = require('./app/sockets/ChatSocket');
-chatSocket.listen(server);
+chatSocket.listen(io);
+
+const userSocket = require('./app/sockets/UserSocket');
+userSocket.listen(io);

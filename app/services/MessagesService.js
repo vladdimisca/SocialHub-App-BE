@@ -1,9 +1,13 @@
-const messagesService = require('../dao/MessageDAO');
+const messageDAO = require('../dao/MessageDAO');
 
 module.exports.sendMessage = async (message) => {
-    await messagesService.sendMessage(message);
+    await messageDAO.sendMessage(message);
+}
+
+module.exports.seenMessage = async (chatId, messageId) => {
+    await messageDAO.seenMessage(chatId, messageId);
 }
 
 module.exports.getAllMessages = async (chatId) => {
-    return await messagesService.getAllMessages(chatId);
+    return await messageDAO.getAllMessages(chatId);
 }

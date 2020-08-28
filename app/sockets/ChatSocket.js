@@ -1,18 +1,15 @@
-const socketIO = require('socket.io');
 const messageService = require('../services/MessagesService');
 const userService = require('../services/UserService');
 
-module.exports.listen = (server) => {
-    const io = socketIO(server);
-
+module.exports.listen = (io) => {
     io.of('/chat').on('connection', (socket) => {
         socket.on('setRoom', (room) => {
           socket.join(room);
         })
 
-        socket.on('message', (message) => {
-          messageService.sendMessage(message);
-
+        socket.on('message', async (message) => {
+          await messageService.sendMessage(message);
+          console.log(message)
           io.of('/chat').in(message.chatId).emit('message-broadcast', message);
         })
 
@@ -24,6 +21,11 @@ module.exports.listen = (server) => {
 
         socket.on('noLongerTyping', (chatId) => {
           io.of('/chat').in(chatId).emit('stopTyping');
+        })
+
+        socket.on('seenMessage', async (chatId, messageId) => {
+          await messageService.seenMessage(chatId, messageId);
+          socket.to(chatId).emit('seen', messageId);
         })
     });
 }
