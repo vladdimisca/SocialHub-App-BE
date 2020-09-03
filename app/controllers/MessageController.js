@@ -5,7 +5,7 @@ const router = express.Router();
 const messageService = require('../services/MessagesService');
 
 router.get('/api/chat', async (req, res) => {
-    let messages = await messageService.getAllMessages(req.query.chatId);
+    let messages = await messageService.getAllMessagesByChat(req.query.chatId);
     
     res.contentType('application/json');
     res.send(JSON.stringify(messages));

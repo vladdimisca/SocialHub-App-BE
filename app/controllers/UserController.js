@@ -5,10 +5,9 @@ const router = express.Router();
 const userService = require('../services/UserService');
 
 router.get('/api/users', async (req, res) => {
-    let users = await userService.getAllUsers();
+    const users = await userService.getAllUsers();
 
-    res.contentType('application/json');
-    res.send(JSON.stringify(users));
+    res.send(users);
 })
 
 router.get('/api/user', async(req, res) => {
@@ -47,6 +46,18 @@ router.get('/api/userByEmail', async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName
     })
+})
+
+router.get('/api/connections', async (req, res) => {
+    const connections = await userService.getConnectionsByEmail(req.query.email);
+
+    res.status(200).send(connections);
+})
+
+router.get('/api/usersByName', async (req, res) => {
+    const users = await userService.getUsersByName(req.query.searchString);
+
+    res.status(200).send(users);
 })
 
 module.exports = router;

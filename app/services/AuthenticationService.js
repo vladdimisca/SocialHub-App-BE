@@ -23,7 +23,6 @@ module.exports.register = async (user) => {
 
 module.exports.login = async (email, password) => {
     const user = await userService.getUserByEmail(email);
-
     const checkPassword = await encryptionService.compareData(password, user.password);
 
     if(!checkPassword) {

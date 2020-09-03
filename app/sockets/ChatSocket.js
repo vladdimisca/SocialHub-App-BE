@@ -9,7 +9,6 @@ module.exports.listen = (io) => {
 
         socket.on('message', async (message) => {
           await messageService.sendMessage(message);
-          console.log(message)
           io.of('/chat').in(message.chatId).emit('message-broadcast', message);
         })
 

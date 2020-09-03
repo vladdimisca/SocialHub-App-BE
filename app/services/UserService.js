@@ -23,3 +23,11 @@ module.exports.getUserByUUID = async (uuid) => {
 module.exports.getUUID = async (email) => {
     return await userDAO.getUUID(email);
 }
+
+module.exports.getConnectionsByEmail = async (email) => {
+    return await userDAO.getConnectionsByEmail(email);
+}
+
+module.exports.getUsersByName = async (searchString) => {
+    return await userDAO.getUsersByName(searchString);
+}

@@ -9,8 +9,8 @@ const authenticationService = require('../services/AuthenticationService');
 
 router.post('/api/register', async (req, res) => {
     try {
-        const user = new UserDTO(req.body.firstName, req.body.lastName, req.body.email, req.body.password);
-
+        const user = new UserDTO(undefined, req.body.firstName, req.body.lastName, req.body.email, req.body.password);
+        
         await authenticationService.register(user);
 
         res.status(200).send({
@@ -24,7 +24,7 @@ router.post('/api/register', async (req, res) => {
 router.post('/api/login', async (req, res) => {
     try {
         await authenticationService.login(req.body.email, req.body.password);
-
+        
         res.status(200).send({
             success: 'Valid credentials!'
         })

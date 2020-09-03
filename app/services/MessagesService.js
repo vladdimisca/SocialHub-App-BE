@@ -8,6 +8,6 @@ module.exports.seenMessage = async (chatId, messageId) => {
     await messageDAO.seenMessage(chatId, messageId);
 }
 
-module.exports.getAllMessages = async (chatId) => {
-    return await messageDAO.getAllMessages(chatId);
+module.exports.getAllMessagesByChat = async (chatId) => {
+    return await messageDAO.getAllMessagesByChat(chatId);
 }
