@@ -3,6 +3,9 @@ const router = express.Router();
 
 // models
 const UserDTO = require('../dto/UserDTO');
+const ExistingUserError = require('../errors/ExistingUserError');
+const UserNotFoundError = require('../errors/UserNotFoundError');
+const WrongPasswordError = require('../errors/WrongPasswordError');
 
 // services
 const authenticationService = require('../services/AuthenticationService');
@@ -17,7 +20,12 @@ router.post('/api/register', async (req, res) => {
             success: 'You have been successfully registered!'
         })
     } catch(error) {
-        res.status(500).send(error.message)
+        if(error instanceof ExistingUserError) {
+            res.status(500).send(error.message)
+        } else {
+            res.status(500).send("Internal error!")
+        }
+        
     }
 })
 
@@ -29,9 +37,14 @@ router.post('/api/login', async (req, res) => {
             success: 'Valid credentials!'
         })
     } catch(error) {
-        res.status(500).send({
-            error: error.message
-        })
+        if(error instanceof UserNotFoundError || error instanceof WrongPasswordError) {
+            res.status(500).send({
+                error: error.message
+            })} else {
+                res.status(200).send({
+                    error: "Internal error!"
+                });
+            }
     }
 })
 

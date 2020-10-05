@@ -6,14 +6,14 @@ module.exports.listen = (io) => {
             users.add(email);
             
             socket.broadcast.emit('users', Array.from(users));
-        })
+        });
 
         socket.on('getOnlineUsers', () => {
             socket.emit('users', Array.from(users));
-        })
+        });
 
         socket.on('disconnect', (email) => {
             users.delete(email);
-        })
+        });
     });
 }

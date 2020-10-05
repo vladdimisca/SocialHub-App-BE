@@ -11,4 +11,13 @@ router.get('/api/chat', async (req, res) => {
     res.send(JSON.stringify(messages));
 })
 
+router.get('/api/checkUnseenMessages', async (req, res) => {
+    const sender = req.query.sender;
+    const receiver = req.query.receiver;
+
+    const status = await messageService.checkUnseenMessages(sender, receiver);
+
+    res.status(200).send(status);
+})
+
 module.exports = router;

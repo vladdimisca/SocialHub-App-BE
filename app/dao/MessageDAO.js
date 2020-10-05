@@ -1,9 +1,7 @@
 const MessageDTO = require('../dto/MessageDTO');
-const userService = require('../services/UserService');
-const db = require('../../app/utils/dbUtil');
-const { use } = require('../controllers/UserController');
-const chatsRef = db.collection('chats'); 
-const connectionsRef = db.collection('user-connections');
+const admin = require('../../app/utils/dbUtil');
+const chatsRef = admin.firestore().collection('chats'); 
+const connectionsRef = admin.firestore().collection('user-connections');
 
 module.exports.sendMessage = async (message) => {
     const chatId = message.chatId;
@@ -19,18 +17,32 @@ module.exports.sendMessage = async (message) => {
     message.messageId = messageDetails.id;
 
     await connectionsRef.doc(message.sender).collection('connections').doc(message.receiver).set({
-        lastMessageTimestamp: message.timestamp
+        lastMessageTimestamp: message.timestamp,
+        seen: message.seen
     });
 
     await connectionsRef.doc(message.receiver).collection('connections').doc(message.sender).set({
-        lastMessageTimestamp: message.timestamp
+        lastMessageTimestamp: message.timestamp,
+        seen: true
     });
 }
 
-module.exports.seenMessage = async (chatId, messageId) => {
+module.exports.seenMessage = async (chatId, messageId, sender, receiver, timestamp) => {
     await chatsRef.doc(chatId).collection('messages').doc(messageId).update({
         seen: true
-    })
+    });
+
+    const lastMessageTimestamp = await (await connectionsRef.doc(sender).collection('connections').doc(receiver).get()).data().lastMessageTimestamp;
+
+    if(timestamp === lastMessageTimestamp) {
+        await connectionsRef.doc(sender).collection('connections').doc(receiver).update({
+            seen: true
+        });
+
+        return true;
+    }
+
+    return false;
 }
 
 module.exports.getAllMessagesByChat = async (chatId) => {
@@ -45,4 +57,8 @@ module.exports.getAllMessagesByChat = async (chatId) => {
     })
     
     return messagesArray;
+}
+
+module.exports.checkUnseenMessages = async (sender, receiver) => {
+    return await (await connectionsRef.doc(receiver).collection('connections').doc(sender).get()).data().seen;
 }
