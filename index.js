@@ -7,8 +7,8 @@ const PORT = 3000;
 const app = express();
 
 app.use(cors({origin: "*"}));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(require('./app/controllers/AuthenticationController'));
 app.use(require('./app/controllers/MessageController'));
 app.use(require('./app/controllers/UserController'));
@@ -26,3 +26,6 @@ chatSocket.listen(io);
 
 const userSocket = require('./app/sockets/UserSocket');
 userSocket.listen(io);
+
+const friendsSocket = require('./app/sockets/FriendsSocket');
+friendsSocket.listen(io);
