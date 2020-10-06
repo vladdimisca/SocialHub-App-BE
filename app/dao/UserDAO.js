@@ -161,7 +161,12 @@ module.exports.changeDescription = async (email, newDescription) => {
 }
 
 module.exports.getDescription = async (email) => {
-    return await (await descriptionRef.doc(email).get()).data().description ;
+    const descriptionDoc = await descriptionRef.doc(email).get();
+
+    if(descriptionDoc.exists) {
+        return descriptionDoc.data().description;
+    }
+    return "";
 }
 
 module.exports.addPost = async (email, description, image, timestamp) => {
@@ -322,4 +327,19 @@ module.exports.getNumberOfFriendsByEmail = async (email) => {
     }
     
     return numberOfFriends;
+}
+
+module.exports.updateProfile= async (uuid, newFirstName, newLastName, newDescription) => {
+    await usersRef.doc(uuid).update({
+        firstName: newFirstName,
+        lastName: newLastName
+    });
+
+    const email = await this.getEmailByUUID(uuid);
+
+    await descriptionRef.doc(email).set({
+        description: newDescription
+    });
+
+    return { user: new UserDTO(uuid, newFirstName, newLastName, email, undefined), description: newDescription }
 }

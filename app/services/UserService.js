@@ -79,3 +79,7 @@ module.exports.getFriendsPostsByEmail = async (email) => {
 module.exports.getNumberOfFriendsByEmail = async (email) => {
     return await userDAO.getNumberOfFriendsByEmail(email);
 }
+
+module.exports.updateProfile = async (uuid, newFirstName, newLastName, newDescription) => {
+    return await userDAO.updateProfile(uuid, newFirstName, newLastName, newDescription);
+}

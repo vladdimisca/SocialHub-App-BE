@@ -127,4 +127,15 @@ router.get('/api/getNumberOfFriendsByEmail', async (req, res) => {
     res.status(200).send(JSON.stringify(numberOfFriends));
 });
 
+router.put('/api/updateProfile', async (req, res) => {
+    const uuid = req.body.uuid;
+    const newFirstName = req.body.firstName;
+    const newLastName = req.body.lastName;
+    const newDescription = req.body.description;
+
+    const json = await userService.updateProfile(uuid, newFirstName, newLastName, newDescription);
+
+    res.status(200).send(json);
+});
+
 module.exports = router;
