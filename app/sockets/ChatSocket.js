@@ -1,5 +1,5 @@
 // services
-const messageService = require('../services/MessagesService');
+const messageService = require('../services/MessageService');
 const userService = require('../services/UserService');
 
 module.exports.listen = (io) => {

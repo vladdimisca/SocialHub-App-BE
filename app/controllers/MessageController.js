@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // services 
-const messageService = require('../services/MessagesService');
+const messageService = require('../services/MessageService');
 const jwtService = require('../services/JwtService');
 
 router.get('/api/getChatMessages', async (req, res) => {
