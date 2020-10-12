@@ -3,26 +3,57 @@ const router = express.Router();
 
 // services
 const userService = require('../services/UserService');
+const jwtService = require('../services/JwtService');
 
-router.get('/api/users', async (req, res) => {
+router.get('/api/getAllUsers', async (req, res) => {
+    const token = req.headers['x-access-token'];
+
+    try {
+        jwtService.verifyToken(token);
+    } catch(error) {
+        res.status(501).send({jwtError: error.message});
+        return;
+    } 
+
     const users = await userService.getAllUsers();
 
     res.status(200).send(users);
 });
 
-router.get('/api/user', async(req, res) => {
-    let user = await userService.getUserByUUID(req.query.uuid);
+router.get('/api/getUserByUUID', async(req, res) => {
+    const token = req.headers['x-access-token'];
+
+    try {
+        jwtService.verifyToken(token);
+    } catch(error) {
+        res.status(501).send({jwtError: error.message});
+        return;
+    } 
+
+    const uuid = req.query.uuid; 
+    const user = await userService.getUserByUUID(uuid);
     
     res.status(200).send(user);
 });
 
-router.get('/api/userUUID', async (req, res) => {
-    let uuid = '';
+router.get('/api/getUUIDbyEmail', async (req, res) => {
+    const token = req.headers['x-access-token'];
 
     try {
-        uuid = await userService.getUUID(req.query.email);
+        jwtService.verifyToken(token);
+    } catch(error) {
+        res.status(501).send({jwtError: error.message});
+        return;
+    } 
+
+    const email = req.query.email;
+    let uuid;
+
+    try {
+        uuid = await userService.getUUIDByEmail(email);
     } catch(error) {
         console.log(error);
+        res.status(500).send();
     } finally {
         res.status(200).send({
             uuid: uuid
@@ -30,104 +61,119 @@ router.get('/api/userUUID', async (req, res) => {
     }
 });
 
-router.get('/api/userEmail', async (req, res) => {
-    let email = await userService.getEmailByUUID(req.query.uuid);
+router.get('/api/getEmailByUUID', async (req, res) => {
+    const token = req.headers['x-access-token'];
+
+    try {
+        jwtService.verifyToken(token);
+    } catch(error) {
+        res.status(501).send({jwtError: error.message});
+        return;
+    } 
+
+    const uuid = req.query.uuid;
+    let email = await userService.getEmailByUUID(uuid);
 
     res.status(200).send(JSON.stringify(email));
 });
 
-router.get('/api/userByEmail', async (req, res) => {
-    const user = await userService.getUserByEmail(req.query.email);
+router.get('/api/getUserByEmail', async (req, res) => {
+    const token = req.headers['x-access-token'];
+
+    try {
+        jwtService.verifyToken(token);
+    } catch(error) {
+        res.status(501).send({jwtError: error.message});
+        return;
+    } 
+    
+    const email = req.query.email;
+    const user = await userService.getUserByEmail(email);
 
     res.status(200).send({
         uuid: user.uuid,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName
-    })
+    });
 });
 
-router.get('/api/connections', async (req, res) => {
-    const connections = await userService.getConnectionsByEmail(req.query.email);
+router.get('/api/getConnectionsByEmail', async (req, res) => {
+    const token = req.headers['x-access-token'];
+
+    try {
+        jwtService.verifyToken(token);
+    } catch(error) {
+        res.status(501).send({jwtError: error.message});
+        return;
+    } 
+
+    const email = req.query.email;
+    const connections = await userService.getConnectionsByEmail(email);
 
     res.status(200).send(connections);
 })
 
 
 router.post('/api/setProfilePicture', async (req, res) => {
-    let pictureURL = await userService.setProfilePicture(req.body.email, req.body.image);
+    const token = req.headers['x-access-token'];
+
+    try {
+        jwtService.verifyToken(token);
+    } catch(error) {
+        res.status(501).send({jwtError: error.message});
+        return;
+    } 
+
+    const email = req.body.email;
+    const image = req.body.image;
+    const pictureURL = await userService.setProfilePicture(email, image);
     
     res.status(200).send(JSON.stringify(pictureURL));
 });
 
 router.get('/api/getProfilePicture', async (req, res) => {
-    const pictureURL = await userService.getProfilePictureByEmail(req.query.email);
+    const token = req.headers['x-access-token'];
+
+    try {
+        jwtService.verifyToken(token);
+    } catch(error) {
+        res.status(501).send({jwtError: error.message});
+        return;
+    } 
+
+    const email = req.query.email;
+    const pictureURL = await userService.getProfilePictureByEmail(email);
 
     res.status(200).send(JSON.stringify(pictureURL));
 });
 
-router.put('/api/changeDescription', async (req, res) => {
-    const email = req.body.email;
-    const newDescription = req.body.description;
+router.get('/api/getDescriptionByEmail', async (req, res) => {
+    const token = req.headers['x-access-token'];
 
-    await userService.changeDescription(email, newDescription);
+    try {
+        jwtService.verifyToken(token);
+    } catch(error) {
+        res.status(501).send({jwtError: error.message});
+        return;
+    } 
 
-    res.status(200).send();
-});
-
-router.get('/api/getDescription', async (req, res) => {
     const email = req.query.email;
-
     const description = await userService.getDescription(email);
 
     res.status(200).send(JSON.stringify(description));
 });
 
-router.post('/api/addPost', async (req, res) => {
-    const email = req.body.email;
-    const description = req.body.description;
-    const image = req.body.image;
-    const timestamp = req.body.timestamp;
-
-    const post = await userService.addPost(email, description, image, timestamp);
-
-    res.status(200).send(post);
-});
-
-router.get('/api/getPostsByEmail', async (req, res) => {
-    const email = req.query.email;
-
-    const posts = await userService.getPostsByEmail(email);
-
-    res.status(200).send(posts);
-});
-
-router.get('/api/checkFriendshipStatus', async (req, res) => {
-    const user = req.query.user;
-    const userToCheck = req.query.userToCheck;
-
-    const status = await userService.checkFriendshipStatus(user, userToCheck);
-
-    res.status(200).send(JSON.stringify(status));
-});
-
-router.get('/api/getFriendsPostsByEmail', async (req, res) => {
-    const email = req.query.email;
-
-    const posts = await userService.getFriendsPostsByEmail(email);
-
-    res.status(200).send(posts);
-});
-
-router.get('/api/getNumberOfFriendsByEmail', async (req, res) => {
-    const email = req.query.email;
-
-    const numberOfFriends = await userService.getNumberOfFriendsByEmail(email);
-    
-    res.status(200).send(JSON.stringify(numberOfFriends));
-});
-
 router.put('/api/updateProfile', async (req, res) => {
+    const token = req.headers['x-access-token'];
+
+    try {
+        jwtService.verifyToken(token);
+    } catch(error) {
+        res.status(501).send({jwtError: error.message});
+        return;
+    } 
+
     const uuid = req.body.uuid;
     const newFirstName = req.body.firstName;
     const newLastName = req.body.lastName;

@@ -1,7 +1,8 @@
+const Config = require('../env/Config');
 const MessageDTO = require('../dto/MessageDTO');
 const admin = require('../../app/utils/dbUtil');
-const chatsRef = admin.firestore().collection('chats'); 
-const connectionsRef = admin.firestore().collection('user-connections');
+const chatsRef = admin.firestore().collection(Config.chatsCollection); 
+const connectionsRef = admin.firestore().collection(Config.connectionsCollection);
 
 module.exports.sendMessage = async (message) => {
     const chatId = message.chatId;

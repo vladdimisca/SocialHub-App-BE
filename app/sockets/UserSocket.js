@@ -2,18 +2,20 @@ const users = new Set();
 
 module.exports.listen = (io) => {
     io.of('user-status').on('connection', (socket) => {
-        socket.on('online', (email) => {
+        socket.on('newOnlineUser', (email) => {
             users.add(email);
             
-            socket.broadcast.emit('users', Array.from(users));
+            socket.broadcast.emit('onlineUser', email);
         });
 
         socket.on('getOnlineUsers', () => {
-            socket.emit('users', Array.from(users));
+            socket.emit('onlineUsers', Array.from(users));
         });
 
-        socket.on('disconnect', (email) => {
+        socket.on('setUserOffline', (email) => {
             users.delete(email);
+            
+            socket.broadcast.emit('offlineUser', email);
         });
     });
 }

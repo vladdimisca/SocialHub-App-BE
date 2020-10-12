@@ -1,9 +1,10 @@
 const express = require('express');
 const bodyParser = require("body-parser");
+const Config = require('./app/env/Config');
 const cors = require('cors');
 const socketIO = require('socket.io');
 
-const PORT = 3000;
+const PORT = Config.port;
 const app = express();
 
 app.use(cors({origin: "*"}));
@@ -12,10 +13,12 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(require('./app/controllers/AuthenticationController'));
 app.use(require('./app/controllers/MessageController'));
 app.use(require('./app/controllers/UserController'));
+app.use(require('./app/controllers/PostController'));
+app.use(require('./app/controllers/FriendsController'));
 
 const server = require('http').Server(app);
 
-server.listen(PORT, function () {
+server.listen(PORT, () => {
   console.log('Social Hub is listening on port ' + PORT + ' !');
 });
 

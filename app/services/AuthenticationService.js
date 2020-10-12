@@ -1,13 +1,14 @@
 // services
 const userService = require('./UserService');
 const encryptionService = require('./EncryptionService');
+const jwtService = require('./JwtService');
 
 // exceptions
 const ExistingUserError = require('../errors/ExistingUserError');
 const WrongPasswordError = require('../errors/WrongPasswordError');
 
 module.exports.register = async (user) => {
-    user.password = await encryptionService.encrypt(user.password);
+    user.password = encryptionService.encrypt(user.password);
     let existingUser;
 
     try {
@@ -28,4 +29,6 @@ module.exports.login = async (email, password) => {
     if(!checkPassword) {
         throw new WrongPasswordError('Invalid password!')
     }
+
+    return jwtService.generateToken(user.uuid);
 }

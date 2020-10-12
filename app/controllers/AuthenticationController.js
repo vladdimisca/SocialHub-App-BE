@@ -31,19 +31,14 @@ router.post('/api/register', async (req, res) => {
 
 router.post('/api/login', async (req, res) => {
     try {
-        await authenticationService.login(req.body.email, req.body.password);
+        const token = await authenticationService.login(req.body.email, req.body.password);
         
-        res.status(200).send({
-            success: 'Valid credentials!'
-        })
+        res.status(200).send(JSON.stringify(token));
     } catch(error) {
         if(error instanceof UserNotFoundError || error instanceof WrongPasswordError) {
-            res.status(500).send({
-                error: error.message
-            })} else {
-                res.status(200).send({
-                    error: "Internal error!"
-                });
+            res.status(500).send(error.message);
+        } else {
+                res.status(400).send("Internal error!");
             }
     }
 })

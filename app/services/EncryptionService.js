@@ -2,8 +2,8 @@ const bcrypt = require('bcryptjs');
 
 const salt = 8;
 
-module.exports.encrypt = async (data) => {
-    return await bcrypt.hashSync(data, salt);
+module.exports.encrypt = (data) => {
+    return bcrypt.hashSync(data, salt);
 }
 
 module.exports.compareData = async (data, dataToCompare) => {
