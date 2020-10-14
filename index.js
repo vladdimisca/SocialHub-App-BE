@@ -4,7 +4,7 @@ const Config = require('./app/env/Config');
 const cors = require('cors');
 const socketIO = require('socket.io');
 
-const PORT = Config.port;
+const PORT = Config.port || 3000;
 const app = express();
 
 app.use(cors({origin: "*"}));

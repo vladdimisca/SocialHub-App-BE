@@ -1,3 +1,4 @@
+const paginate = require('jw-paginate');
 const express = require('express');
 const router = express.Router();
 
@@ -53,9 +54,17 @@ router.get('/api/getFriendsPostsByEmail', async (req, res) => {
     } 
 
     const email = req.query.email;
+    const page = req.query.page || 1;
     const posts = await postService.getFriendsPostsByEmail(email);
+    const pageSize = 5;
+    const pager = paginate(posts.length, page, pageSize);
+    let pageOfPosts = [];
+    
+    if(page * (pageSize - 1) <= posts.length) {
+        pageOfPosts = posts.slice(pager.startIndex, pager.endIndex + 1);
+    } 
 
-    res.status(200).send(posts);
+    res.status(200).send(pageOfPosts);
 });
 
 module.exports = router;

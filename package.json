@@ -14,6 +14,7 @@
     "express": "^4.17.1",
     "firebase-admin": "^9.0.0",
     "firebase-functions": "^3.8.0",
+    "jw-paginate": "^1.0.4",
     "socket.io": "^2.3.0",
     "twilio": "^3.48.1"
   }
