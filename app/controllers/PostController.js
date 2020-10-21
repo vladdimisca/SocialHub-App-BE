@@ -12,7 +12,7 @@ router.post('/api/addPost', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -32,7 +32,7 @@ router.get('/api/getPostsByEmail', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -49,22 +49,14 @@ router.get('/api/getFriendsPostsByEmail', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
     const email = req.query.email;
-    const page = req.query.page || 1;
     const posts = await postService.getFriendsPostsByEmail(email);
-    const pageSize = 5;
-    const pager = paginate(posts.length, page, pageSize);
-    let pageOfPosts = [];
     
-    if(page * (pageSize - 1) <= posts.length) {
-        pageOfPosts = posts.slice(pager.startIndex, pager.endIndex + 1);
-    } 
-
-    res.status(200).send(pageOfPosts);
+    res.status(200).send(posts);
 });
 
 module.exports = router;

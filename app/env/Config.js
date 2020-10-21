@@ -16,5 +16,5 @@ module.exports.salt = 8;
 // jwt secret key
 module.exports.jwtSecretKey = 'SocialHub#JwtKey';
 
-// jwt token expire time
+// jwt token expiration time
 module.exports.jwtExpireTime = 3600;

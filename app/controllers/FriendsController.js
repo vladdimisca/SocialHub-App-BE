@@ -11,7 +11,7 @@ router.get('/api/checkFriendshipStatus', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -28,7 +28,7 @@ router.get('/api/getNumberOfFriendsByEmail', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -44,12 +44,15 @@ router.get('/api/getFriendsByEmail', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
+    const page = req.query.page || 1;
+    const pageSize = req.query.pageSize || 10;
     const email = req.query.email;
-    const friends = await friendsService.getFriendsByEmail(email);
+
+    const friends = await friendsService.getFriendsByEmail(email, page, pageSize);
 
     res.status(200).send(friends);
 });
@@ -60,7 +63,7 @@ router.get('/api/getFriendRequestsByEmail', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 

@@ -83,7 +83,7 @@ module.exports.getNumberOfFriendsByEmail = async (email) => {
     return numberOfFriends;
 }
 
-module.exports.getFriendsByEmail = async (email) => {
+module.exports.getFriendsByEmail = async (email, page, pageSize) => {
     const friendsCollection = await friendsRef.doc(email).collection('friends').get();
     const emailsArray = [];
 

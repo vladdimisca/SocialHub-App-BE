@@ -10,29 +10,29 @@ module.exports.listen = (io) => {
         socket.on('sendRequest', async (sender, receiver) => {
             await friendsService.sendFriendRequest(sender, receiver);
 
-            socket.to(receiver).emit('requestReceived', sender);
-            io.of('friends').in(sender).emit('requestSent', receiver);
+            socket.to(receiver).emit('requestReceived', sender, receiver);
+            io.of('friends').in(sender).emit('requestSent', sender, receiver);
         });
 
         socket.on('acceptRequest', async (sender, receiver) => {
             await friendsService.acceptFriendRequest(sender, receiver);
 
-            io.of('friends').in(sender).emit('requestAccepted', receiver);
-            socket.to(receiver).emit('requestAccepted', sender);
+            io.of('friends').in(sender).emit('requestAccepted', sender, receiver);
+            socket.to(receiver).emit('requestAccepted', sender, receiver);
         });
 
         socket.on('unfriendRequest', async (sender, receiver) => {
             await friendsService.removeFriend(sender, receiver);
 
-            io.of('friends').in(sender).emit('unfriendSent', receiver);
-            socket.to(receiver).emit('unfriendReceived', sender);
+            io.of('friends').in(sender).emit('unfriendSent', sender, receiver);
+            socket.to(receiver).emit('unfriendReceived', sender, receiver);
         });
 
         socket.on('unsendFriendRequest', async (sender, receiver) => {
             await friendsService.unsendFriendRequest(sender, receiver);
 
-            io.of('friends').in(sender).emit('requestUnsent', receiver);
-            io.of('friends').in(receiver).emit('requestWithdrawn', sender);
+            io.of('friends').in(sender).emit('requestUnsent', sender, receiver);
+            io.of('friends').in(receiver).emit('requestWithdrawn', sender, receiver);
         });
     });
 }

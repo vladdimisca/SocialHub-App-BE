@@ -8,6 +8,6 @@ module.exports.getPostsByEmail = async (email) => {
     return await postDAO.getPostsByEmail(email);
 }
 
-module.exports.getFriendsPostsByEmail = async (email) => {
-    return await postDAO.getFriendsPostsByEmail(email);
+module.exports.getFriendsPostsByEmail = async (email, page, pageSize) => {
+    return await postDAO.getFriendsPostsByEmail(email, page, pageSize);
 }

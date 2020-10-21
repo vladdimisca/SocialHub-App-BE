@@ -11,7 +11,7 @@ router.get('/api/getAllUsers', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -26,7 +26,7 @@ router.get('/api/getUserByUUID', async(req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -42,7 +42,7 @@ router.get('/api/getUUIDbyEmail', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -67,7 +67,7 @@ router.get('/api/getEmailByUUID', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -83,7 +83,7 @@ router.get('/api/getUserByEmail', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
     
@@ -104,7 +104,7 @@ router.get('/api/getConnectionsByEmail', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -121,7 +121,7 @@ router.post('/api/setProfilePicture', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -138,7 +138,7 @@ router.get('/api/getProfilePicture', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -154,7 +154,7 @@ router.get('/api/getDescriptionByEmail', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -170,7 +170,7 @@ router.put('/api/updateProfile', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 

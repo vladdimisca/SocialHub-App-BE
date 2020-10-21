@@ -11,7 +11,7 @@ router.get('/api/getChatMessages', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 
@@ -27,7 +27,7 @@ router.get('/api/checkUnseenMessages', async (req, res) => {
     try {
         jwtService.verifyToken(token);
     } catch(error) {
-        res.status(501).send({jwtError: error.message});
+        res.status(401).send({jwtError: error.message});
         return;
     } 
 

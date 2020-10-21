@@ -5,7 +5,7 @@ module.exports.listen = (io) => {
         socket.on('newOnlineUser', (email) => {
             users.add(email);
             
-            socket.broadcast.emit('onlineUser', email);
+            io.of('user-status').emit('onlineUser', email);
         });
 
         socket.on('getOnlineUsers', () => {
@@ -15,7 +15,7 @@ module.exports.listen = (io) => {
         socket.on('setUserOffline', (email) => {
             users.delete(email);
             
-            socket.broadcast.emit('offlineUser', email);
+            io.of('user-status').emit('offlineUser', email);
         });
     });
 }

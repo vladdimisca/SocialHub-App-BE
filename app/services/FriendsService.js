@@ -24,8 +24,8 @@ module.exports.getNumberOfFriendsByEmail = async (email) => {
     return await friendsDAO.getNumberOfFriendsByEmail(email);
 }
 
-module.exports.getFriendsByEmail = async (email) => {
-    return await friendsDAO.getFriendsByEmail(email);
+module.exports.getFriendsByEmail = async (email, page, pageSize) => {
+    return await friendsDAO.getFriendsByEmail(email, page, pageSize);
 }
 
 module.exports.getFriendRequestsByEmail = async (email) => {
