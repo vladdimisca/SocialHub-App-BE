@@ -9,6 +9,7 @@ module.exports.descriptionsCollection = 'user-description';
 module.exports.postsCollection = 'user-posts';
 module.exports.chatsCollection = 'chats';  
 module.exports.friendsCollection = 'user-friends';
+module.exports.commentsCollection = 'comments';
 
 // bcrypt salt
 module.exports.salt = 8;

@@ -31,13 +31,14 @@ module.exports.addPost = async (email, description, image, timestamp) => {
                     action: 'read',
                     expires: Date.now() + 300 * 365 * 24 * 60 * 60 * 1000
             }).then(async signedUrls => {
-                await postsRef.doc(email).collection('posts').doc().set({
+                await postsRef.doc(email).collection('posts').add({
                     description: description,
                     pictureURL: signedUrls[0],
                     timestamp: timestamp
+                }).then(function(postsRef) {
+                    resolve(new PostDTO(postsRef.id, email, description, signedUrls[0], timestamp));
                 });
-
-                resolve(new PostDTO(email, description, signedUrls[0], timestamp));
+                
               });
            });
     })
@@ -50,9 +51,9 @@ module.exports.getPostsByEmail = async (email) => {
     const postsArray = [];
 
     posts.forEach(post => {
+        postId = post.id;
         post = post.data();
-
-        postsArray.push(new PostDTO(email, post.description, post.pictureURL, post.timestamp));
+        postsArray.push(new PostDTO(postId, email, post.description, post.pictureURL, post.timestamp));
     });
 
     return postsArray;
@@ -66,9 +67,9 @@ module.exports.getFriendsPostsByEmail = async (email) => {
         const friendPosts = await postsRef.doc(friend.email).collection('posts').get();
 
         friendPosts.forEach(postDoc => {
+            postId = postDoc.id;
             const post = postDoc.data();
-
-            postsArray.push(new PostDTO(friend.email, post.description, post.pictureURL, post.timestamp));
+            postsArray.push(new PostDTO(postId, friend.email, post.description, post.pictureURL, post.timestamp));
         });
     }
     

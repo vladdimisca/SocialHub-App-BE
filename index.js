@@ -15,6 +15,7 @@ app.use(require('./app/controllers/MessageController'));
 app.use(require('./app/controllers/UserController'));
 app.use(require('./app/controllers/PostController'));
 app.use(require('./app/controllers/FriendsController'));
+app.use(require('./app/controllers/CommentController'));
 
 const server = require('http').Server(app);
 
@@ -32,3 +33,6 @@ userSocket.listen(io);
 
 const friendsSocket = require('./app/sockets/FriendsSocket');
 friendsSocket.listen(io);
+
+const commentSocket = require('./app/sockets/CommentSocket');
+commentSocket.listen(io);

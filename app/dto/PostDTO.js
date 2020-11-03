@@ -1,5 +1,6 @@
 class PostDTO {
-    constructor(email, description, pictureURL, timestamp) {
+    constructor(postId, email, description, pictureURL, timestamp) {
+        this.postId = postId
         this.email = email;
         this.description = description;
         this.pictureURL = pictureURL;
