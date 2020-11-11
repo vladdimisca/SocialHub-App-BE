@@ -1,5 +1,11 @@
 const userDAO = require('../dao/UserDAO');
 
+//services
+const encryptionService = require('./EncryptionService');
+
+// exceptions
+const WrongPasswordError = require('../errors/WrongPasswordError');
+
 module.exports.addUser = async (user) => {
     await userDAO.addUser(user);
 }
@@ -42,4 +48,8 @@ module.exports.getDescription = async (email) => {
 
 module.exports.updateProfile = async (uuid, newFirstName, newLastName, newDescription) => {
     return await userDAO.updateProfile(uuid, newFirstName, newLastName, newDescription);
+}
+
+module.exports.changePassword = async (uuid, password) => {
+    await userDAO.changePassword(uuid,  encryptionService.encrypt(password));
 }

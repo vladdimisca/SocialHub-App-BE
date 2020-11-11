@@ -169,3 +169,9 @@ module.exports.updateProfile = async (uuid, newFirstName, newLastName, newDescri
 
     return { user: new UserDTO(uuid, newFirstName, newLastName, email, undefined), description: newDescription }
 }
+
+module.exports.changePassword = async (uuid, password) => {
+    await usersRef.doc(uuid).update({
+        password: password
+    })
+}

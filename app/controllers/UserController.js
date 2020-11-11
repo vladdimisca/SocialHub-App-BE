@@ -184,4 +184,11 @@ router.put('/api/updateProfile', async (req, res) => {
     res.status(200).send(json);
 });
 
+router.put('/api/changePassword', async (req, res) => {
+    
+    userService.changePassword(req.body.uuid, req.body.password);
+    res.status(200).send();
+  
+});
+
 module.exports = router;

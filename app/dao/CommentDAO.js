@@ -1,9 +1,6 @@
 const Config = require('../env/Config');
 const admin = require('../../app/utils/dbUtil');
-const postsRef = admin.firestore().collection(Config.postsCollection);
 const commentsRef = admin.firestore().collection(Config.commentsCollection);
-const bucket = admin.storage().bucket();
-const PostDTO = require('../dto/PostDTO');
 const CommentDTO = require ('../dto/CommentDTO');
 
 module.exports.addComment = async (comment) => {
@@ -27,4 +24,8 @@ module.exports.getCommentsByPostId = async (postId) => {
     });
 
     return commentsArray;   
+}
+
+module.exports.deleteComment = async (commentId) => {
+    await commentsRef.doc(commentId).delete();
 }

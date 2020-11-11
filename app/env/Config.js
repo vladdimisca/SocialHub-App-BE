@@ -10,6 +10,7 @@ module.exports.postsCollection = 'user-posts';
 module.exports.chatsCollection = 'chats';  
 module.exports.friendsCollection = 'user-friends';
 module.exports.commentsCollection = 'comments';
+module.exports.likesCollection = 'post-likes';
 
 // bcrypt salt
 module.exports.salt = 8;
